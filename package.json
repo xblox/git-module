@@ -1,0 +1,30 @@
+{
+  "author": "Günter Baumgart",
+  "name": "git-module",
+  "version": "0.1.0",
+  "description": "Package which emulates git sub modules",
+  "contributors": [
+    {
+      "name": "Günter Baumgart",
+      "email": "baumgart.guenter@gmail.com",
+      "url": "http://pearls-media.com/control-freak"
+    }
+  ],
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/control-freak-ide/git-module.git"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/ibm-js/delite/blob/master/LICENSE"
+    }
+  ],
+  "bugs": "https://github.com/gbaumgart/git-module/issues",
+  "dependencies": {
+    "q": "^1.4.1",
+    "x-dojo": "git+https://github.com/gbaumgart/x-dojo.git",
+    "yargs-parser": "^4.0.2"
+  }
+}
