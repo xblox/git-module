@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git://github.com/control-freak-ide/git-module.git"
   },
+  "bin": {
+    "nexe": "bin/nexe"
+  },
   "licenses": [
     {
       "type": "BSD",
@@ -23,8 +26,11 @@
   ],
   "bugs": "https://github.com/gbaumgart/git-module/issues",
   "dependencies": {
+    "lodash": "^4.16.6",
+    "mkdirp": "^0.5.1",
     "q": "^1.4.1",
     "x-dojo": "git+https://github.com/gbaumgart/x-dojo.git",
+    "yargs": "^6.3.0",
     "yargs-parser": "^4.0.2"
   }
 }
