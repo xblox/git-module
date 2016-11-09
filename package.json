@@ -1,7 +1,7 @@
 {
   "author": "Günter Baumgart",
   "name": "git-module",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Package which emulates git sub modules",
   "contributors": [
     {
@@ -16,7 +16,7 @@
     "url": "git://github.com/control-freak-ide/git-module.git"
   },
   "bin": {
-    "nexe": "bin/nexe"
+    "nexe": "bin/git-module"
   },
   "licenses": [
     {
@@ -29,8 +29,6 @@
     "lodash": "^4.16.6",
     "mkdirp": "^0.5.1",
     "q": "^1.4.1",
-    "x-dojo": "git+https://github.com/gbaumgart/x-dojo.git",
-    "yargs": "^6.3.0",
-    "yargs-parser": "^4.0.2"
+    "yargs": "^6.3.0"
   }
 }
