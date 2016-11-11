@@ -1,7 +1,7 @@
 {
   "author": "Günter Baumgart",
   "name": "git-module",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Package which emulates git sub modules",
   "contributors": [
     {
