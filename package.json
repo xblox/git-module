@@ -4,11 +4,7 @@
   "version": "0.0.7",
   "description": "Package which emulates git sub modules",
   "contributors": [
-    {
-      "name": "Günter Baumgart",
-      "email": "baumgart.guenter@gmail.com",
-      "url": "http://pearls-media.com/control-freak"
-    }
+
   ],
   "devDependencies": {},
   "repository": {
