@@ -1,7 +1,7 @@
 {
   "author": "Günter Baumgart",
   "name": "git-module",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Package which emulates git sub modules",
   "contributors": [
     {
@@ -13,7 +13,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/control-freak-ide/git-module.git"
+    "url": "git://github.com/gbaumgart/git-module.git"
   },
   "bin": {
     "git-module": "bin/git-module"
