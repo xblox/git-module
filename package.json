@@ -1,15 +1,13 @@
 {
   "author": "Günter Baumgart",
   "name": "git-module",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Package which emulates git sub modules",
-  "contributors": [
-
-  ],
+  "contributors": [],
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/gbaumgart/git-module.git"
+    "url": "git://github.com/xblox/git-module.git"
   },
   "bin": {
     "git-module": "bin/git-module"
@@ -25,6 +23,6 @@
     "lodash": "^4.16.6",
     "mkdirp": "^0.5.1",
     "q": "^1.4.1",
-    "yargs": "^6.3.0"
+    "yargs": "^6.6.0"
   }
 }
