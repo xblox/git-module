@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+
+        "module": "commonjs",
+        "target": "es6",
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "sourceMap": true,
+        "rootDir": "./src",
+        "outDir": "./dist"
+    },
+	"exclude": [
+		"node_modules"
+	]
+}
