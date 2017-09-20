@@ -1,2 +1,1 @@
-
-export * from './exe';
+export * from './main';

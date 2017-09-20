@@ -89,7 +89,7 @@ const doGitCommand = (module: string, command: string, gitOptions: null | any, g
  * @param modules {object[]}
  * @returns {*}
  */
-const getModules = (argvIn: any, modulesIn: any[]) => {
+const getModules = (argvIn: any, modulesIn: any[] = []): any[] => {
     if (argvIn.module) {
         const which = getModuleConfig(argvIn.module, modulesIn);
         if (which) {
@@ -122,23 +122,23 @@ cli.command('init-modules', 'Init modules provided in package.json or package.js
             return;
         }
         try {
-            let _modules = modules.getModules(argv.source, argv.profile);
+            const _modules = modules.getModules(argv.source, argv.profile);
             if (!_modules || !_modules.length) {
                 console.warn('have nothing to do, abort');
                 return;
             }
-            let dfd = Q.defer();
-            //ensure target
+            const dfd = Q.defer();
+            // ensure target
             mkdirp.sync(argv.target);
 
-            let all = [];
-            let command = "clone";
+            const all = [];
+            const command = "clone";
             _.each(_modules, function (module) {
-                let gitOptions = {};
-                let moduleOptions = module.options;
+                const gitOptions = {};
+                const moduleOptions = module.options;
                 moduleOptions.recursive && (gitOptions.recursive = true);
                 moduleOptions.verbose && (gitOptions.verbose = true);
-                let gitArgs = [moduleOptions.repository, moduleOptions.directory];
+                const gitArgs = [moduleOptions.repository, moduleOptions.directory];
                 let gitFailed = false;
 
                 const cwd = path.resolve(argv.target);
@@ -175,19 +175,19 @@ cli.command('update-modules', 'update modules provided in package.json or packag
             return;
         }
         try {
-            let _modules = getModules(argv, modules.getModules(argv.source, argv.profile));
+            const _modules = getModules(argv, modules.getModules(argv.source, argv.profile));
             if (!_modules || !_modules.length) {
                 console.warn('have nothing to do, abort');
             }
-            let dfd = Q.defer();
+            const dfd = Q.defer();
 
-            //ensure target
+            // ensure target
             mkdirp.sync(argv.target);
-            let all = [];
+            const all = [];
             _.each(_modules, function (module) {
-                let moduleOptions = module.options;
-                let cwd = path.resolve(path.join(argv.target, moduleOptions.directory));
-                let exec = doGitCommand(module, 'pull', null, null, cwd, null, null);
+                const moduleOptions = module.options;
+                const cwd = path.resolve(path.join(argv.target, moduleOptions.directory));
+                const exec = doGitCommand(module, 'pull', null, null, cwd, null, null);
                 exec.then(function () {
                 }, function (e) {
                     console.error(e);
@@ -214,7 +214,7 @@ cli.command('commit-modules', 'commit provided in package.json or package.js', f
     return defaultArgs(yargs).
         option('message', {
             alias: 'message',
-            "default": "auto-commit"
+            default: "auto-commit"
         });
 },
     function (argv) {
@@ -222,23 +222,23 @@ cli.command('commit-modules', 'commit provided in package.json or package.js', f
             return;
         }
         try {
-            let _modules = getModules(argv, modules.getModules(argv.source));
+            const _modules = getModules(argv, modules.getModules(argv.source));
             if (!_modules || !_modules.length) {
                 console.warn('have nothing to do, abort');
             }
-            let dfd = Q.defer();
+            const dfd = Q.defer();
 
-            //ensure target
+            // ensure target
             mkdirp.sync(argv.target);
-            let all = [];
+            const all = [];
             _.each(_modules, function (module) {
-                let moduleOptions = module.options;
-                let cwd = path.resolve(path.join(argv.target, moduleOptions.directory));
+                const moduleOptions = module.options;
+                const cwd = path.resolve(path.join(argv.target, moduleOptions.directory));
                 let gitCommitFailed = false;
-                let gitCommit = doGitCommand(module, "commit", null, [".", "--message=" + "\"" + argv.message + "\""], cwd, function () {
+                const gitCommit = doGitCommand(module, "commit", null, [".", "--message=" + "\"" + argv.message + "\""], cwd, function () {
                     gitCommitFailed = true;
                 }, null);
-                let gitPush = gitCommitFailed !== true && doGitCommand(module, "push", null, [""], cwd, null, null);
+                const gitPush = gitCommitFailed !== true && doGitCommand(module, "push", null, [""], cwd, null, null);
                 all.push(gitCommit);
                 gitPush && all.push(gitPush);
             });
@@ -260,7 +260,7 @@ cli.command('commit-modules', 'commit provided in package.json or package.js', f
 cli.command('each-module', 'run a command for each module provided in package.json or package.js', function (yargs) {
     return defaultArgs(yargs).option('cmd', {
         alias: 'cmd',
-        "default": "git status"
+        default: "git status"
     });
 },
     function (argv) {
@@ -268,14 +268,14 @@ cli.command('each-module', 'run a command for each module provided in package.js
             return;
         }
         try {
-            let _modules = getModules(argv, modules.getModules(argv.source));
+            const _modules = getModules(argv, modules.getModules(argv.source));
             if (!_modules || !_modules.length) {
                 console.warn('have nothing to do, abort');
             }
             const dfd = Q.defer();
             // ensure target
             mkdirp.sync(argv.target);
-            let all = [];
+            const all = [];
             _.each(_modules, function (module) {
                 const moduleOptions = module.options;
                 const cwd = path.resolve(path.join(argv.target, moduleOptions.directory));
