@@ -14,22 +14,21 @@ export enum STATUS {
     ERROR,
     PENDING
 }
-const subscribe = (signal: stream.Readable, resolve: any, reject: any, collector?: (data: any) => void) => {
-    return new Promise<any>((resolve, reject) => {
+const subscribe = (signal: stream.Readable, collector?: (data: any) => void) => {
         const buffer: string[] = [];
         signal.on('message', (message) =>  debug.debug('message', message));
         signal.on('error', (error) =>  debug.error('std-error', error));
         signal.on('data', (data) => {
             buffer.push(data.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""));
+            // tslint:disable-next-line:no-unused-expression
             collector && collector(buffer);
         });
-    });
 };
 const hook = (process: ChildProcess, resolve: any, reject: any) => {
-    let buffer = [];
+    let buffer: string[] = [];
     const collector = (data: any) =>  { buffer = buffer.concat(data); };
-    const stdout = subscribe(process.stdout, resolve, reject, collector);
-    const stderr = subscribe(process.stderr, resolve, reject, collector);
+    const stdout = subscribe(process.stdout, collector);
+    const stderr = subscribe(process.stderr, collector);
     process.on('exit', (code, signal) => {
         Promise.resolve(stdout);
         Promise.resolve(stderr);

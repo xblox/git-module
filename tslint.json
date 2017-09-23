@@ -5,11 +5,12 @@
     ],
     "jsRules": {},
     "rules": {
-        "indent":false,
-        "quotemark":false,
-        "ordered-imports":false,
-        "trailing-comma":false,
-        "no-console":false
+        "indent": false,
+        "quotemark": false,
+        "ordered-imports": false,
+        "trailing-comma": false,
+        "no-console": false,
+        "no-unused-expression": false
     },
     "rulesDirectory": []
 }

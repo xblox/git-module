@@ -10,7 +10,6 @@ import * as Q from 'q';
 import { modules } from './modules';
 import * as debug from './debug';
 import * as bluebird from 'bluebird';
-
 import { jetpack } from '@xblox/fs';
 
 cli.options('v', {
@@ -76,23 +75,15 @@ class Helper {
         });
         gitOptions = gitOptions || {};
         gitArgs = gitArgs || [];
-        try {
-            const p = gitp.exec(command, gitOptions, gitArgs, true, true);
-            if (p) {
-                p.then((result) => {
-                    console.log('result', JSON.stringify(result, null, 2));
-                });
+        const p = gitp.exec(command, gitOptions, gitArgs, true, true);
+        p.then((result) => {
+            console.log('result', JSON.stringify(result, null, 2));
+        });
 
-                p.catch((e) => {
-                    debug.error('Error git command : ' + command);
-                });
-                return p;
-            }
-
-        } catch (error) {
-            debug.error('e');
-        }
-
+        p.catch((e) => {
+            debug.error('Error git command : ' + command);
+        });
+        return p;
     }
 }
 
@@ -183,44 +174,18 @@ cli.command('init-modules', 'Init modules provided in package.json or package.js
             return;
         }
         try {
-            const _modules = modules(argv.source, argv.profile);
-            if (!_modules.length) {
+            const pkgModules = modules(argv.source, argv.profile);
+            if (!pkgModules.length) {
                 console.warn('have nothing to do, abort');
                 return;
             }
             const dfd = Q.defer();
             // ensure target
             mkdirp.sync(argv.target);
-
             const all: any[] = [];
             const command = "clone";
-            /*
-            _.each(_modules, (module: any) => {
-                const gitOptions: any = {};
-                const moduleOptions = module.options;
-                moduleOptions.recursive && (gitOptions.recursive = true);
-                moduleOptions.verbose && (gitOptions.verbose = true);
-                const gitArgs = [moduleOptions.repository, moduleOptions.directory];
-                let gitFailed = false;
-
-                const cwd = path.resolve(argv.target);
-                const exec = doGitCommand(module, command, gitOptions, gitArgs, cwd, () => {
-                    gitFailed = true;
-                }, null);
-                exec.then(() => {
-                    gitFailed !== true && doModulePost(module, module[command]);
-                }, (e) => {
-                    debug.error(e);
-                });
-                all.push(exec);
-            });
-            */
-            /*
-            bluebird.all(all), (s) => {
-                console.log('s', s);
-            })*/
             const deleteBefore = argv.delete === 'true';
-            const all2 = bluebird.mapSeries(_modules, (module: any) => {
+            const all2 = bluebird.mapSeries(pkgModules, (module: any) => {
                 const gitOptions: any = {};
                 const moduleOptions = module.options;
                 moduleOptions.recursive && (gitOptions.recursive = true);
@@ -238,19 +203,6 @@ cli.command('init-modules', 'Init modules provided in package.json or package.js
                     console.log('--done');
                 }, debug.info);
             });
-
-            /*
-
-            Q.all(all).then(() => {
-                dfd.resolve();
-                console.log('all good!');
-            }, (e) => {
-                console.error('something bad happened:', e);
-                dfd.reject(e);
-            });
-            */
-
-            return dfd.promise;
         } catch (e) {
             console.log('Error ' + e, e.stack);
         }

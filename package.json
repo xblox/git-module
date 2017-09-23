@@ -4,7 +4,18 @@
   "version": "0.0.8",
   "description": "Package which emulates git sub modules",
   "contributors": [],
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/bluebird": "^3.5.11",
+    "@types/chalk": "^0.4.31",
+    "@types/lodash": "^4.14.74",
+    "@types/mkdirp": "^0.5.1",
+    "@types/node": "^8.0.30",
+    "@types/q": "^1.0.5",
+    "@types/which": "^1.0.28",
+    "@types/yargs": "^8.0.2",
+    "tslib": "^1.7.1",
+    "typescript": "^2.5.2"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/xblox/git-module.git"
@@ -20,6 +31,7 @@
   ],
   "bugs": "https://github.com/gbaumgart/git-module/issues",
   "dependencies": {
+    "@xblox/fs": "^0.13.12",
     "lodash": "^4.16.6",
     "mkdirp": "^0.5.1",
     "q": "^1.4.1",
