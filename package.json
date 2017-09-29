@@ -16,6 +16,19 @@
     "tslib": "^1.7.1",
     "typescript": "^2.5.2"
   },
+  "modules":[
+  {
+    "name": "Code/client",
+    "options": {
+      "repository": "https://github.com/xblox/xjs.git",
+      "directory": "Code/client"
+    },
+    "clone": {
+      "post": {
+        "command": "npm install"
+      }
+    }
+  }],
   "repository": {
     "type": "git",
     "url": "git://github.com/xblox/git-module.git"
@@ -23,18 +36,17 @@
   "bin": {
     "git-module": "bin/git-module"
   },
-  "licenses": [
-    {
-      "type": "BSD",
-      "url": "https://github.com/ibm-js/delite/blob/master/LICENSE"
-    }
-  ],
+  "licenses": [{
+    "type": "BSD",
+    "url": "https://github.com/ibm-js/delite/blob/master/LICENSE"
+  }],
   "bugs": "https://github.com/gbaumgart/git-module/issues",
   "dependencies": {
     "@xblox/fs": "^0.13.12",
     "lodash": "^4.16.6",
     "mkdirp": "^0.5.1",
     "q": "^1.4.1",
+    "yargonaut": "^1.1.2",
     "yargs": "^6.6.0"
   }
 }

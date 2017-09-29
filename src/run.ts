@@ -1,6 +1,6 @@
 import * as CLI from 'yargs';
 import * as path from 'path';
-import { info, error, warn, debug } from './debug';
+import * as debug from './debug';
 import { cwd } from './fs';
 import { exec } from 'child_process';
 const compressOutput = true;
@@ -13,18 +13,18 @@ const removeExtras = (str: string) => {
 };
 
 // tslint:disable-next-line:max-line-length
-async function run(cwd: string, command: string, args: string[] = [], ignoreErrors: boolean, silent: boolean): Promise<void> {
+async function run(where: string, command: string, args: string[] = [], ignoreErrors: boolean, silent: boolean): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         const cmd = command + ' ' + args.join(' ');
         // tslint:disable-next-line:no-unused-expression
-        !silent && info("\t Run command : " + cmd + " in " + cwd);
+        !silent && debug.info("\t Run command : " + cmd + " in " + where);
         const p = exec(cmd, {
-            cwd: cwd,
+            cwd: where,
             maxBuffer: 1024 * 1000,
         });
-        let _warning: string;
-        let _error: string;
-        let options = {};
+        let warning: string;
+        let error: string;
+        const options = {};
 
         p.stdout.on('data', function(d: string) {
             const message: string = removeExtras(d);
@@ -32,36 +32,36 @@ async function run(cwd: string, command: string, args: string[] = [], ignoreErro
                 return;
             }
             if (d.match(/^\[ERR\]/)) {
-                _error = _error || message;
-                error('Error ' + _error);
+                error = error || message;
+                debug.error('Error ' + error);
             } else if (d.match(/^\[WRN\]/)) {
-                _warning = _warning || message;
-                info('\t' + message);
+                warning = warning || message;
+                debug.info('\t' + message);
             } else {
                 const dataLine: string = message.trim();
                 if (dataLine) {
-                    info('\t Info ' + dataLine);
+                    debug.info('\t Info ' + dataLine);
                 }
             }
         });
 
         p.stderr.on('data', (d: string) => {
-            error(removeExtras(d));
+            debug.error(removeExtras(d));
         });
 
         const failOnWarn = true;
         p.on('exit', function(code) {
-            if (_error) {
-                error('\t Error on exit : ' + _error);
+            if (error) {
+                debug.error('\t Error on exit : ' + error);
             }
 
-            if (_warning && failOnWarn) {
-                warn('\t ' + _warning + ' (see log for details)');
+            if (warning && failOnWarn) {
+                debug.warn('\t ' + warning + ' (see log for details)');
             }
 
             // Sencha CMD sometimes does not provide exit code when there are "only" warnings
             if (code !== 0 && code !== null) {
-                error('Exited with code: ' + code);
+                debug.error('Exited with code: ' + code);
                 reject();
             }
             resolve();

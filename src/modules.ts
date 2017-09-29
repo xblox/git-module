@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as _ from 'lodash';
 
-export const modules = (root: string, profile: string) => {
+export const get = (root: string, profile: string) => {
     let pkginfo: any = null;
     let packageJSON: any = null;
     try {
