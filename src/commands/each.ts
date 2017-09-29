@@ -16,18 +16,16 @@ const options = (yargs: CLI.Argv) => defaultOptions(yargs.option('command', {
     describe: 'the command to run per module'
 }));
 
-const description = (): string =>
-    'Run a command for all modules' +
+const description = (): string => {
+    return 'Run a command for all modules' +
     '\n\t Parameters : ' +
     chalk.green('\n\t\t\t --command=[command to run]');
-
-const register = (cli: CLI.Argv) => {
+};
+export const register = (cli: CLI.Argv) => {
     return cli.command('each-module', description(), options, (argv: CLI.Arguments) => {
         if (argv.help) { return; }
-
         const args = sanitize(argv) as IEachOptions;
         const pkgModules = get(argv.source, argv.profile);
-        // debug.inspect('mods', pkgModules);
         if (!pkgModules.length) {
             debug.warn('have nothing to do, abort');
             return;
@@ -35,4 +33,3 @@ const register = (cli: CLI.Argv) => {
         return each(pkgModules, args);
     });
 };
-export default register;

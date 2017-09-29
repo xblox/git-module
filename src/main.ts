@@ -23,19 +23,10 @@ cli.options('v', {
 const defaultArgs = (yargs: any) => {
     return yargs;
 };
-import { default as each } from './commands/each'; each(cli);
+// import { default as each } from './commands/each'; each(cli);
 import * as commands from './commands';
-commands.loadBuiltInCommands();
-/*
-export async function loadBuiltInCommands() {
-    const builtInCommandsPaths = await commands.enumerateBuiltInCommands(c);
-    console.log('b', builtInCommandsPaths);
-    // return await loadCommands(builtInCommandsPaths, builtInCommandLoader);
-}
-loadBuiltInCommands().then((e) => {
-    console.log('commands ', e);
-});
-*/
+commands.loadBuiltInCommands(cli);
+
 cli.command('modules-info', 'Init modules provided in package.json or package.js', defaultArgs,
     // tslint:disable-next-line:no-shadowed-variable
     function (argv) {

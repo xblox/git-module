@@ -12,7 +12,7 @@
         "allowUnusedLabels": false,
 
         "module": "commonjs",
-        "target": "es6",
+        "target": "es2017",
         "importHelpers": true,
         "noEmitHelpers": true,
         "sourceMap": true,
