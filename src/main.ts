@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-var-requires
 const yargonaut = require('yargonaut')
-.style('blue').helpStyle('green');
+    .style('blue').helpStyle('green');
 
 import * as cli from 'yargs';
 
@@ -24,6 +24,18 @@ const defaultArgs = (yargs: any) => {
     return yargs;
 };
 import { default as each } from './commands/each'; each(cli);
+import * as commands from './commands';
+commands.loadBuiltInCommands();
+/*
+export async function loadBuiltInCommands() {
+    const builtInCommandsPaths = await commands.enumerateBuiltInCommands(c);
+    console.log('b', builtInCommandsPaths);
+    // return await loadCommands(builtInCommandsPaths, builtInCommandLoader);
+}
+loadBuiltInCommands().then((e) => {
+    console.log('commands ', e);
+});
+*/
 cli.command('modules-info', 'Init modules provided in package.json or package.js', defaultArgs,
     // tslint:disable-next-line:no-shadowed-variable
     function (argv) {
@@ -52,13 +64,13 @@ cli.command('modules-info', 'Init modules provided in package.json or package.js
                     return;
                 }
                 const exec = Helper.run(module, command, gitOptions, gitArgs, cwd);
-/*
-                exec.then(() => {
-                    post(module, module[command]);
-                }, (e) => {
-                    debug.error(e);
-                });
-                */
+                /*
+                                exec.then(() => {
+                                    post(module, module[command]);
+                                }, (e) => {
+                                    debug.error(e);
+                                });
+                                */
 
                 all.push(exec);
             });
@@ -70,7 +82,7 @@ cli.command('modules-info', 'Init modules provided in package.json or package.js
 
 cli.command('init-modules', 'Init modules provided in package.json or package.js', defaultArgs,
     // tslint:disable-next-line:no-shadowed-variable
-    function(argv) {
+    function (argv) {
         if (argv.help) {
             return;
         }
