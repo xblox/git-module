@@ -1,10 +1,27 @@
-import * as path from 'path';
 import * as fs from 'fs';
-import * as _ from 'lodash';
+import * as path from 'path';
+import { IModuleConfig } from './types';
+import * as url from 'url';
+import { fs as fsts} from '@xblox/fs/index';
+console.log('exists : ', fsts().exists('.'));
+// tslint:disable-next-line:no-var-requires
+type IPackageModules = any & {
+    modules: IModuleConfig[];
+};
 
-export const get = (root: string, profile: string) => {
-    let pkginfo: any = null;
-    let packageJSON: any = null;
+export const complete = (module: IModuleConfig): IModuleConfig => {
+    const repo = module.options.repository || '';
+    const parts = url.parse(repo);
+    module.repoName = path.basename(parts.path || '', path.extname(repo));
+    return module;
+};
+
+export const get = (root: string, profile: string): any[] => {
+    console.log('get modules from ' + root);
+    root = path.resolve(root);
+
+    let pkginfo: IPackageModules = null;
+    let packageJSON: string = '';
     try {
         if (fs.statSync(root).isDirectory()) {
             if (fs.statSync(path.join(root + '/package.json'))) {
@@ -16,21 +33,18 @@ export const get = (root: string, profile: string) => {
     } catch (e) {
         console.warn('error reading modules', e);
     }
-
     if (packageJSON) {
         pkginfo = require(packageJSON);
     } else {
         pkginfo = {};
     }
-
-    // try package.json
     if (pkginfo && pkginfo.modules) {
         if (profile) {
             return pkginfo.modules.filter((module: any) => {
                 return (!module.options.profile) || (module.options.profile === profile);
             });
         }
-        return pkginfo.modules;
+        return pkginfo.modules.map(complete);
     } else {
         return [];
     }

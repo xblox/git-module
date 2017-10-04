@@ -1,11 +1,8 @@
-import { forEach } from '../../vscode/out-build/vs/base/common/collections';
 import * as globby from 'globby';
-import { resolve as pathResolve, join } from 'path';
-// import { CommandsMap, CommandWrapper } from './command';
-import { Config } from './config';
-import * as cli from 'yargs';
+import { join, resolve as pathResolve } from 'path';
 import * as commands from './commands';
-import { default as c } from './config';
+import { Config, default as conf } from './config';
+
 export type YargsCommandNames = Map<string, Set<string>>;
 
 /**
@@ -32,10 +29,7 @@ export function enumerateBuiltInCommands(config: Config): string[] {
     const builtInCommandParentDirGlob = join(config.builtInCommandLocation, '/*.js');
     return globby.sync(builtInCommandParentDirGlob, { ignore: '**/*.map' });
 }
-/**
- * Simple loader
- * @param path : string
- */
+
 export const load = (path: string, CLI: any) => {
     const mod = require(path);
     mod.default(CLI);
@@ -43,7 +37,7 @@ export const load = (path: string, CLI: any) => {
 };
 
 export async function loadBuiltInCommands(CLI: any) {
-    const builtInCommandsPaths = commands.enumerateBuiltInCommands(c);
+    const builtInCommandsPaths = commands.enumerateBuiltInCommands(conf);
     builtInCommandsPaths.forEach((path: string) => {
         load(path, CLI);
     });

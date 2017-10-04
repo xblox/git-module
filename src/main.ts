@@ -1,21 +1,20 @@
 // tslint:disable-next-line:no-var-requires
-const yargonaut = require('yargonaut')
-    .style('blue').helpStyle('green');
+// import { jetpack } from '@xblox/fs';
 
+import * as bluebird from 'bluebird';
+import * as mkdirp from 'mkdirp';
+import * as path from 'path';
 import * as cli from 'yargs';
 
-import * as fs from 'fs';
-import * as path from 'path';
-import * as mkdirp from 'mkdirp';
-import * as _ from 'lodash';
-import * as child_process from 'child_process';
-
-import { Git } from './git';
-import * as Q from 'q';
+import * as commands from './commands';
 import * as debug from './debug';
-import * as bluebird from 'bluebird';
-import { jetpack } from '@xblox/fs';
 import { get, Helper } from './lib';
+import * as _each from './commands/each';
+// tslint:disable-next-line:no-var-requires
+const yargonaut = require('yargonaut')
+    .style('blue')
+    .helpStyle('green');
+
 cli.options('v', {
     alias: 'version',
     description: 'Display version number'
@@ -23,13 +22,12 @@ cli.options('v', {
 const defaultArgs = (yargs: any) => {
     return yargs;
 };
-// import { default as each } from './commands/each'; each(cli);
-import * as commands from './commands';
-commands.loadBuiltInCommands(cli);
-
+import { register as registerEach } from './commands/each'; registerEach(cli);
+// commands.loadBuiltInCommands(cli);
+/*
 cli.command('modules-info', 'Init modules provided in package.json or package.js', defaultArgs,
     // tslint:disable-next-line:no-shadowed-variable
-    function (argv) {
+    function(argv) {
         if (argv.help) {
             return;
         }
@@ -55,13 +53,12 @@ cli.command('modules-info', 'Init modules provided in package.json or package.js
                     return;
                 }
                 const exec = Helper.run(module, command, gitOptions, gitArgs, cwd);
-                /*
+
                                 exec.then(() => {
                                     post(module, module[command]);
                                 }, (e) => {
                                     debug.error(e);
                                 });
-                                */
 
                 all.push(exec);
             });
@@ -73,7 +70,7 @@ cli.command('modules-info', 'Init modules provided in package.json or package.js
 
 cli.command('init-modules', 'Init modules provided in package.json or package.js', defaultArgs,
     // tslint:disable-next-line:no-shadowed-variable
-    function (argv) {
+    function(argv) {
         if (argv.help) {
             return;
         }
@@ -105,7 +102,7 @@ cli.command('init-modules', 'Init modules provided in package.json or package.js
             console.log('Error ' + e, e.stack);
         }
     });
-
+*/
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();

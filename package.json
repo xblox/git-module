@@ -20,7 +20,7 @@
     {
       "name": "Code/client",
       "options": {
-        "repository": "https://github.com/xblox/xjs.git",
+        "repository": "https://github.com/xblox/xaction.git",
         "directory": "Code/client"
       },
       "clone": {
@@ -34,19 +34,15 @@
     "type": "git",
     "url": "git://github.com/xblox/git-module.git"
   },
-  "bin": {
+  "bin2": {
     "git-module": "bin/git-module"
   },
-  "licenses": [
-    {
-      "type": "BSD",
-      "url": "https://github.com/ibm-js/delite/blob/master/LICENSE"
-    }
-  ],
-  "bugs": "https://github.com/gbaumgart/git-module/issues",
+  "scripts": {
+    "lint": "tslint --project=./tsconfig.json",
+    "status": "tsc ; node dist/main.js each-module --command='status' --source='../'"
+  },
   "dependencies": {
     "@types/globby": "^6.1.0",
-    "@xblox/fs": "^0.13.12",
     "globby": "^6.1.0",
     "lodash": "^4.16.6",
     "mkdirp": "^0.5.1",

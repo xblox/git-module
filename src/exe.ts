@@ -101,21 +101,6 @@ const getModules = (argvIn: any, modulesIn: any[] = []): any[] => {
     return modulesIn;
 };
 
-const defaultArgs = (yargs: any) => {
-    return yargs.option('target', {
-        alias: 'target',
-        default: process.cwd()
-    }).option('source', {
-        alias: 'source',
-        default: process.cwd()
-    }).option('profile', {
-        alias: 'profile',
-        default: 'default'
-    }).option('module', {
-        alias: 'module'
-    });
-};
-
 cli.command('init-modules', 'Init modules provided in package.json or package.js', defaultArgs,
     function (argv) {
         if (argv.help) {

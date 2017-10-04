@@ -1,27 +1,24 @@
 // imports
-import * as fs from 'fs';
-import * as path from 'path';
-import { exec, spawn, spawnSync, ChildProcess } from 'child_process';
+import { ChildProcess, exec, spawn, spawnSync } from 'child_process';
+import * as stream from 'stream';
 import { promisify } from 'util';
-import * as Q from 'q';
 import { sync as which } from 'which';
 import * as debug from './debug';
-import * as stream from "stream";
-const exep = promisify(exec);
-const spwanp = promisify(spawnSync);
+
 export enum STATUS {
     OK,
     ERROR,
     PENDING
 }
-const subscribe = (signal: stream.Readable, collector?: (data: any) => void) => {
+
+// tslint:disable-next-line:no-empty
+const subscribe = (signal: stream.Readable, collector: (data: any) => void = () => {}) => {
         const buffer: string[] = [];
         signal.on('message', (message) =>  debug.debug('message', message));
         signal.on('error', (error) =>  debug.error('std-error', error));
         signal.on('data', (data) => {
             buffer.push(data.toString().replace(/[\x00-\x1F\x7F-\x9F]/g, ""));
-            // tslint:disable-next-line:no-unused-expression
-            collector && collector(buffer);
+            collector(buffer);
         });
 };
 const hook = (process: ChildProcess, resolve: any, reject: any) => {
@@ -30,8 +27,6 @@ const hook = (process: ChildProcess, resolve: any, reject: any) => {
     const stdout = subscribe(process.stdout, collector);
     const stderr = subscribe(process.stderr, collector);
     process.on('exit', (code, signal) => {
-        Promise.resolve(stdout);
-        Promise.resolve(stderr);
         if (code) {
             resolve({
                 code: STATUS.ERROR,
@@ -44,12 +39,13 @@ const hook = (process: ChildProcess, resolve: any, reject: any) => {
             });
         }
     });
+    return process;
 };
 
 export class Git {
     public binary = 'git';
     public cwd: string = '';
-    public args: string;
+    public args: string = '';
     constructor(options: any = {}) {
         this.binary = which('git');
         this.cwd = options.cwd || process.cwd();
@@ -100,13 +96,13 @@ export class Git {
         }
         return args;
     }
-    public async exec(command: string, options: any, args: any, ignoreErrors: boolean, verbose: boolean) {
+    public async exec(command: string, options: any = {}, args: any[] = []) {
         args = [command].concat(this.optionsToArray(options).concat(args));
         return new Promise<string>((resolve, reject) => {
             const p = spawn(this.binary, args, {
                 cwd: this.cwd
             });
-            hook(p, resolve, reject);
+            return hook(p, resolve, reject);
         });
     }
 }

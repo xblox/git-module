@@ -1,15 +1,15 @@
-import * as cli from 'yargs';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as mkdirp from 'mkdirp';
-import * as _ from 'lodash';
-import * as child_process from 'child_process';
-import { Git } from './git';
-import * as debug from './debug';
 import * as bluebird from 'bluebird';
-import { IModules, IModuleConfig, IEachOptions } from './types';
-import { defaults } from './module';
+import * as _ from 'lodash';
+import * as path from 'path';
+
+import * as debug from './debug';
+import { Git } from './git';
+import { IEachOptions, IModules, IModuleConfig } from './types';
+// import * as e from '@xblox/fs/exists';
+// const e = require('@xblox/fs');
+// console.log('e,', e);
 export { get } from './modules';
+import { get as getModules } from './modules';
 
 const config = (nameOrPath: string, modules: IModules) => _.find(modules, (modConfig: any) => {
     if (modConfig.options && (modConfig.options.directory === nameOrPath || modConfig.name === nameOrPath)) {
@@ -22,11 +22,15 @@ export const each = (modules: IModules, args: IEachOptions) => {
     return bluebird.mapSeries(modules, (module: any) => {
         const gitOptions: any = {};
         const moduleOptions = module.options;
-        moduleOptions.recursive && (gitOptions.recursive = true);
-        moduleOptions.verbose && (gitOptions.verbose = true);
         const gitArgs = [moduleOptions.repository, moduleOptions.directory];
         const cwd = path.resolve(args.target);
         const where = path.join(cwd, moduleOptions.directory);
+        // console.log('cwd ', cwd);
+        // console.log('where ', where);
+        // if (!jetpack('').exists(where)) {
+        //    debug.warn('Skip running ' + command + '! Target module directory doesnt exists : ' + where );
+        //    return Promise.resolve('');
+        // }
         return Helper.run(module, command, gitOptions, gitArgs, cwd);
     });
 };
@@ -56,31 +60,18 @@ export const post = (mod: IModuleConfig, commandOptions: any, target: string = '
 */
 export class Helper {
     // tslint:disable-next-line:max-line-length
-    public static async run(module: any, command: string, gitOptions: null | any, gitArgs: null | string[], where: string) {
+    public static async run(module: IModuleConfig, command: string, gitOptions: null | any, gitArgs: null | string[], where: string) {
         const gitp = new Git({
             cwd: where
         });
         gitOptions = gitOptions || {};
         gitArgs = gitArgs || [];
-        const p = gitp.exec(command, gitOptions, gitArgs, true, true);
-        debug.info('Run ' + command + ' in ' + where);
+        const p = gitp.exec(command, gitOptions, gitArgs);
+        debug.info('Run ' + command + ' in ' + where + ' for module ' + module.name);
         p.then((result) => {
-            console.log('result', JSON.stringify(result, null, 2));
+            // console.log('result', JSON.stringify(result, null, 2));
         });
         p.catch((e) => debug.error('Error git command : ' + command));
         return p;
     }
 }
-/*
-export const get = (argvIn: any, modulesIn: IModules = []): any[] => {
-    if (argvIn.module) {
-        const which = config(argvIn.module, modulesIn);
-        if (which) {
-            return [which];
-        } else {
-            return [];
-        }
-    }
-    return modulesIn;
-};
-*/

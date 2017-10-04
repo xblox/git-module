@@ -15,13 +15,14 @@ export interface IModuleCloneOption {
 
 export interface IModuleConfig {
     name: string;
-    options?: IModuleOptions;
+    options: IModuleOptions;
     clone?: IModuleCloneOption;
+    repoName?: string;
 }
 
 export type IModules = IModuleConfig[];
 
-export type IDefaultCLIArgs  = CLI.Arguments & {
+export type IDefaultCLIArgs = CLI.Arguments & {
     source?: string;
     target?: string;
     module?: string;
@@ -29,5 +30,5 @@ export type IDefaultCLIArgs  = CLI.Arguments & {
 };
 
 export type IEachOptions = IDefaultCLIArgs & {
-    delete?: boolean|string;
+    delete?: boolean | string;
 };
