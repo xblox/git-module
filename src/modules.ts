@@ -2,33 +2,40 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { IModuleConfig } from './types';
 import * as url from 'url';
-import { fs as fsts} from '@xblox/fs/index';
-console.log('exists : ', fsts().exists('.'));
+import { fs as fsts } from '@xblox/fs/index';
+import { sync as existsSync } from '@xblox/fs/exists';
+import { githubFilter, profileFilter } from './lib';
+import { Module } from './module';
 // tslint:disable-next-line:no-var-requires
 type IPackageModules = any & {
     modules: IModuleConfig[];
 };
 
-export const complete = (module: IModuleConfig): IModuleConfig => {
+export const complete = (module: IModuleConfig, root: string): IModuleConfig => {
     const repo = module.options.repository || '';
     const parts = url.parse(repo);
     module.repoName = path.basename(parts.path || '', path.extname(repo));
+    module.exists = existsSync(path.join(root, module.options.directory)) !== false;
+    const cwd = path.join(root, module.options.directory);
+    if (existsSync(cwd)) {
+        module.cwd = cwd;
+    } else {
+        module.cwd = root;
+    }
+    module.isGithub = module.options.repository.indexOf('github.com') !== -1;
     return module;
 };
 
-export const get = (root: string, profile: string): any[] => {
-    console.log('get modules from ' + root);
-    root = path.resolve(root);
-
+export const read = (source: string, target: string, profile: string): any[] => {
     let pkginfo: IPackageModules = null;
     let packageJSON: string = '';
     try {
-        if (fs.statSync(root).isDirectory()) {
-            if (fs.statSync(path.join(root + '/package.json'))) {
-                packageJSON = path.join(root + '/package.json');
+        if (fs.statSync(source).isDirectory()) {
+            if (fs.statSync(path.join(source + '/package.json'))) {
+                packageJSON = path.join(source + '/package.json');
             }
-        } else if (fs.statSync(path.join(process.cwd(), root)).isFile()) {
-            packageJSON = path.join(process.cwd(), root);
+        } else if (fs.statSync(path.join(process.cwd(), source)).isFile()) {
+            packageJSON = path.join(process.cwd(), source);
         }
     } catch (e) {
         console.warn('error reading modules', e);
@@ -39,13 +46,18 @@ export const get = (root: string, profile: string): any[] => {
         pkginfo = {};
     }
     if (pkginfo && pkginfo.modules) {
-        if (profile) {
-            return pkginfo.modules.filter((module: any) => {
-                return (!module.options.profile) || (module.options.profile === profile);
-            });
-        }
-        return pkginfo.modules.map(complete);
+        return pkginfo.modules.map((module: IModuleConfig) => complete(module, target));
     } else {
         return [];
     }
+};
+
+export const get = (source: string, target: string, profile: string): Module[] => {
+    let modules = read(source, target, profile);
+    if (profile) {
+        modules = profileFilter(modules, profile);
+    }
+    return modules.map((module) => {
+        return Module.from(module);
+    });
 };

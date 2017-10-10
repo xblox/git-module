@@ -7,6 +7,7 @@ export const sanitize = (argv: any): IDefaultCLIArgs => {
     argv.source = path.resolve(argv.source);
     argv.target = path.resolve(argv.target);
     argv.profile = argv.profile || '';
+    argv.filter = argv.filter || '';
     return argv;
 };
 
@@ -19,5 +20,7 @@ export const defaultOptions = (yargs: CLI.Argv) => {
         describe: 'the source'
     }).option('profile', {
         describe: 'only use modules which specified that profile'
+    }).option('filter', {
+        describe: 'select github or gitlab repositories: --filter=github|gitlab'
     });
 };

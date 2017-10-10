@@ -1,6 +1,3 @@
-// tslint:disable-next-line:no-var-requires
-// import { jetpack } from '@xblox/fs';
-
 import * as bluebird from 'bluebird';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
@@ -23,6 +20,8 @@ const defaultArgs = (yargs: any) => {
     return yargs;
 };
 import { register as registerEach } from './commands/each'; registerEach(cli);
+import { register as registerList } from './commands/list'; registerList(cli);
+import { register as registerLast } from './commands/last'; registerLast(cli);
 // commands.loadBuiltInCommands(cli);
 /*
 cli.command('modules-info', 'Init modules provided in package.json or package.js', defaultArgs,

@@ -10,7 +10,7 @@
         "noUnusedParameters": false,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
-
+        "experimentalDecorators": true,
         "module": "commonjs",
         "target": "es2017",
         "importHelpers": true,

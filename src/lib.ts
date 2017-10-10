@@ -1,37 +1,63 @@
 import * as bluebird from 'bluebird';
 import * as _ from 'lodash';
 import * as path from 'path';
-
 import * as debug from './debug';
 import { Git } from './git';
-import { IEachOptions, IModules, IModuleConfig } from './types';
-// import * as e from '@xblox/fs/exists';
-// const e = require('@xblox/fs');
-// console.log('e,', e);
+import { Module } from './module';
+import { IEachOptions, IGitModuleResult, IModuleConfig, IModules } from './types';
+import * as ora from 'ora';
+
 export { get } from './modules';
-import { get as getModules } from './modules';
+export const githubFilter = (module: IModuleConfig): boolean => {
+    return module.isGithub === true;
+};
+// filter to select modules by a profile
+export const profileFilter = (modules: IModules, profile: string): IModules => modules.filter((module) => module.options.profile === profile);
 
 const config = (nameOrPath: string, modules: IModules) => _.find(modules, (modConfig: any) => {
     if (modConfig.options && (modConfig.options.directory === nameOrPath || modConfig.name === nameOrPath)) {
         return modConfig;
     }
 });
-export const each = (modules: IModules, args: IEachOptions) => {
+const invalid = (module: IModuleConfig, message: string = 'Doesnt exists'): IGitModuleResult => {
+    return {
+        code: 1,
+        message,
+        module
+    };
+};
+const already = (module: IModuleConfig, message: string = 'Already exists'): IGitModuleResult => {
+    return {
+        code: 0,
+        message,
+        module
+    };
+};
+
+export const each = (modules: Module[], args: IEachOptions, gitArgs?: string[]) => {
     const command = args.command;
     const deleteBefore = args.delete === 'true';
-    return bluebird.mapSeries(modules, (module: any) => {
+    return bluebird.mapSeries(modules, (module: IModuleConfig) => {
         const gitOptions: any = {};
         const moduleOptions = module.options;
-        const gitArgs = [moduleOptions.repository, moduleOptions.directory];
+        gitArgs = gitArgs || [moduleOptions.repository, moduleOptions.directory];
         const cwd = path.resolve(args.target);
-        const where = path.join(cwd, moduleOptions.directory);
-        // console.log('cwd ', cwd);
-        // console.log('where ', where);
-        // if (!jetpack('').exists(where)) {
-        //    debug.warn('Skip running ' + command + '! Target module directory doesnt exists : ' + where );
-        //    return Promise.resolve('');
-        // }
-        return Helper.run(module, command, gitOptions, gitArgs, cwd);
+        if (module.exists && command === 'clone') {
+            // debug.warn('Module already checked out: ' + module.options.repository + ' in ' + module.cwd + ' skipping!');
+            return Promise.resolve(already(module));
+        }
+        if (!module.exists && command !== 'clone') {
+            // debug.warn('Module not checked out yet : ' + module.options.repository + ' in ' + module.cwd + ' skipping!');
+            // return Promise.resolve(invalid(module));
+        }
+        if (args.filter === 'github' && !module.isGithub) {
+            return Promise.resolve(invalid(module, 'Skipped by filter : ' + args.filter));
+        }
+        const promise = Helper.run(module, command || '', gitOptions, gitArgs, module.cwd || '');
+        promise.then((result) => {
+            result.module = module;
+        });
+        return promise;
     });
 };
 /*
@@ -59,18 +85,13 @@ export const post = (mod: IModuleConfig, commandOptions: any, target: string = '
 };
 */
 export class Helper {
-    // tslint:disable-next-line:max-line-length
-    public static async run(module: IModuleConfig, command: string, gitOptions: null | any, gitArgs: null | string[], where: string) {
-        const gitp = new Git({
+    public static async run(module: IModuleConfig, command: string, gitOptions: any, gitArgs: string[], where: string): Promise<IGitModuleResult> {
+        const gitProcess = new Git({
             cwd: where
         });
-        gitOptions = gitOptions || {};
-        gitArgs = gitArgs || [];
-        const p = gitp.exec(command, gitOptions, gitArgs);
-        debug.info('Run ' + command + ' in ' + where + ' for module ' + module.name);
-        p.then((result) => {
-            // console.log('result', JSON.stringify(result, null, 2));
-        });
+        const p = gitProcess.exec(command, gitOptions, gitArgs);
+        const spinner = debug.spinner('Run ' + command + ' in ' + where + ' for module ' + module.name).start();
+        p.then(() => spinner.stopAndPersist());
         p.catch((e) => debug.error('Error git command : ' + command));
         return p;
     }
