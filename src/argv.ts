@@ -3,11 +3,12 @@ import * as path from 'path';
 import { IDefaultCLIArgs } from './types';
 
 export const sanitize = (argv: any): IDefaultCLIArgs => {
-    argv =  argv as IDefaultCLIArgs;
+    argv = argv as IDefaultCLIArgs;
     argv.source = path.resolve(argv.source);
     argv.target = path.resolve(argv.target);
     argv.profile = argv.profile || '';
     argv.filter = argv.filter || '';
+    argv.verbose = argv.verbose === 'true' ? true : false;
     return argv;
 };
 

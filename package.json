@@ -41,8 +41,10 @@
     "lint": "tslint --project=./tsconfig.json",
     "status": "tsc ; node dist/main.js each-module --profile='test' --command='status' --source='../' --target='../out'",
     "clone": "tsc ; node dist/main.js each-module --command='clone' --source='../' --target='../out'",
-    "list": "tsc ; node dist/main.js list --profile='test' --source='../' --target='../out'",
+    "list": "tsc ; node dist/main.js list --source='../' --target='../out'",
     "last": "tsc ; node dist/main.js last --source='../' --target='../out'",
+    "commit": "tsc ; node dist/main.js commit --source='../' --target='../out'",
+    "update-modules": "tsc ; node dist/main.js update --source='../' --target='../out' --verbose=true",
     "postinstall": "npm link ../../fs"
   },
   "dependencies": {

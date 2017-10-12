@@ -22,6 +22,8 @@ const defaultArgs = (yargs: any) => {
 import { register as registerEach } from './commands/each'; registerEach(cli);
 import { register as registerList } from './commands/list'; registerList(cli);
 import { register as registerLast } from './commands/last'; registerLast(cli);
+import { register as registerCommit } from './commands/commit'; registerCommit(cli);
+import { register as registerUpdate } from './commands/update'; registerUpdate(cli);
 // commands.loadBuiltInCommands(cli);
 /*
 cli.command('modules-info', 'Init modules provided in package.json or package.js', defaultArgs,

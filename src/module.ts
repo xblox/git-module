@@ -26,6 +26,11 @@ export class Module implements IModuleConfig {
         return ret;
     }
 
+    public pack() {
+        const ret = lodash.omitBy(JSON.parse(serialize<Module>(this)), lodash.isNil);
+        return ret as Module;
+    }
+
     @Exclude()
     public repoName: string = '';
 
@@ -39,6 +44,7 @@ export class Module implements IModuleConfig {
     public isGithub: boolean = false;
 
     public name: string = '';
+
     public options: IModuleOptions = {
         directory: '',
         profile: '',
@@ -47,8 +53,5 @@ export class Module implements IModuleConfig {
 
     public serialize() {
         return serialize<Module>(this);
-    }
-    public pack() {
-        return lodash.omitBy(JSON.parse(serialize<Module>(this)), lodash.isNil);
     }
 }

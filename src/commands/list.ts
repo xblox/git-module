@@ -22,9 +22,7 @@ export const register = (cli: CLI.Argv) => {
         if (args.target) {
             dir.sync(args.target);
         }
-        const modules = get(args.source, args.target, args.profile).map((module) => {
-            return module.pack();
-        });
+        const modules = get(args.source, args.target, args.profile);
 
         debug.inspect('modules:', modules);
         // const all = each(modules, args);

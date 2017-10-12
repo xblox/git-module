@@ -25,6 +25,6 @@ export const register = (cli: CLI.Argv) => {
         }
         const modules = get(args.source, args.target, args.profile);
         const all = each(modules, args);
-        all.then((r) => debug.inspect('Modules', r));
+        // all.then((r) => debug.inspect('Modules', r));
     });
 };

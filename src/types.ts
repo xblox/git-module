@@ -37,6 +37,7 @@ export type IDefaultCLIArgs = CLI.Arguments & {
     module: string;
     profile: string;
     filter?: string;
+    verbose?: boolean;
 };
 
 export type IEachOptions = IDefaultCLIArgs & {

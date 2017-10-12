@@ -6,7 +6,7 @@ import { Git } from './git';
 import { Module } from './module';
 import { IEachOptions, IGitModuleResult, IModuleConfig, IModules } from './types';
 import * as ora from 'ora';
-
+import * as cli from 'yargs';
 export { get } from './modules';
 export const githubFilter = (module: IModuleConfig): boolean => {
     return module.isGithub === true;
@@ -40,10 +40,10 @@ export const each = (modules: Module[], args: IEachOptions, gitArgs?: string[]) 
     return bluebird.mapSeries(modules, (module: IModuleConfig) => {
         const gitOptions: any = {};
         const moduleOptions = module.options;
-        gitArgs = gitArgs || [moduleOptions.repository, moduleOptions.directory];
+        const gArgs = gitArgs || [module.options.repository, module.options.directory];
         const cwd = path.resolve(args.target);
         if (module.exists && command === 'clone') {
-            // debug.warn('Module already checked out: ' + module.options.repository + ' in ' + module.cwd + ' skipping!');
+            // debug.warn('\t Module already checked out: ' + module.options.repository + ' in ' + module.cwd + ' skipping!');
             return Promise.resolve(already(module));
         }
         if (!module.exists && command !== 'clone') {
@@ -53,7 +53,7 @@ export const each = (modules: Module[], args: IEachOptions, gitArgs?: string[]) 
         if (args.filter === 'github' && !module.isGithub) {
             return Promise.resolve(invalid(module, 'Skipped by filter : ' + args.filter));
         }
-        const promise = Helper.run(module, command || '', gitOptions, gitArgs, module.cwd || '');
+        const promise = Helper.run(module, command || '', gitOptions, gArgs, module.cwd || '');
         promise.then((result) => {
             result.module = module;
         });

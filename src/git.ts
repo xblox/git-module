@@ -30,7 +30,7 @@ const subscribe = (signal: stream.Readable, collector: (data: any) => void = () 
         buffer.push(message); // .replace(/[\x00-\x1F\x7F-\x9F]/g, "")
         collector(buffer);
         // if (!fatalHandler(message, debug.warn)) {
-            //  anyHandler(message, debug.inspect);
+        //  anyHandler(message, debug.inspect);
         // }
     });
 };
