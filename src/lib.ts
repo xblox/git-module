@@ -19,6 +19,7 @@ const config = (nameOrPath: string, modules: IModules) => _.find(modules, (modCo
         return modConfig;
     }
 });
+
 const invalid = (module: IModuleConfig, message: string = 'Doesnt exists'): IGitModuleResult => {
     return {
         code: 1,
