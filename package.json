@@ -1,7 +1,6 @@
 {
-  "author": "Günter Baumgart",
-  "name": "git-module",
-  "version": "0.0.8",
+  "name": "@xblox/git-module",
+  "version": "0.0.10",
   "description": "Package which emulates git sub modules",
   "contributors": [],
   "devDependencies": {
@@ -50,8 +49,7 @@
     "update-modules": "tsc ; node dist/main.js update --source='../' --target='../out' --verbose=true"
   },
   "dependencies": {
-    
-    "@xblox/fs": "^0.13.17",
+    "@xblox/fs": "^0.13.18",
     "class-transformer": "^0.1.8",
     "globby": "^6.1.0",
     "jsome": "^2.3.26",
