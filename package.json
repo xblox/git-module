@@ -29,8 +29,8 @@
   },
   "scripts": {
     "lint": "tslint --project=./tsconfig.json",
-    "status": "tsc ; node dist/main.js each-module --profile='test' --command='status' --source='../' --target='../out'",
-    "clone": "tsc ; node dist/main.js each-module --command='clone' --source='./' --target='./out'",
+    "status": "tsc ; node dist/main.js each --profile='test' --command='status' --source='../' --target='../out'",
+    "clone": "tsc ; node dist/main.js each --command='clone' --source='./' --target='./out'",
     "list": "tsc ; node dist/main.js list --source='../' --target='../out'",
     "last": "tsc ; node dist/main.js last --source='../' --target='../out'",
     "add": "tsc ; node dist/main.js add --source='./'",
