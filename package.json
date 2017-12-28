@@ -34,8 +34,8 @@
     "type": "git",
     "url": "git://github.com/xblox/git-module.git"
   },
-  "bin2": {
-    "git-module": "bin/git-module"
+  "bin": {
+    "git-module": "dist/main.js"
   },
   "scripts": {
     "lint": "tslint --project=./tsconfig.json",
