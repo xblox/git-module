@@ -1,6 +1,6 @@
 {
   "name": "@xblox/git-module",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Package which emulates git sub modules",
   "contributors": [],
   "devDependencies": {
@@ -14,7 +14,7 @@
     "@types/q": "^1.0.5",
     "@types/which": "^1.0.28",
     "@types/yargs": "^8.0.2",
-    "tslib": "^1.7.1",
+    "tslib": "^1.8.1",
     "typescript": "^2.5.2"
   },
   "modules": [

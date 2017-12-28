@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import * as bluebird from 'bluebird';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
