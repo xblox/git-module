@@ -5,8 +5,7 @@ import * as debug from './debug';
 import { Git } from './git';
 import { Module } from './module';
 import { IEachOptions, IGitModuleResult, IModuleConfig, IModules } from './types';
-import * as ora from 'ora';
-import * as cli from 'yargs';
+
 export { get } from './modules';
 
 export const githubFilter = (module: IModuleConfig): boolean => module.isGithub === true;
