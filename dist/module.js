@@ -27,25 +27,21 @@ class Module {
             profile: '',
             repository: ''
         };
-    }
-    static from(json) {
-        const ret = new Module();
-        ret.name = json.name;
-        ret.options = json.options;
-        ret.repoName = json.repoName || '';
-        ret.isGithub = json.isGithub !== undefined ? json.isGithub : false;
-        ret.cwd = json.cwd || '';
-        ret.exists = 'exists' in json ? json.exists : false;
-        return ret;
-    }
-    pack() {
-        const ret = lodash.omitBy(JSON.parse(class_transformer_1.serialize(this)), lodash.isNil);
-        return ret;
-    }
-    serialize() {
-        return class_transformer_1.serialize(this);
+        this.pack = () => lodash.omitBy(JSON.parse(class_transformer_1.serialize(this)), lodash.isNil);
+        this.serialize = () => class_transformer_1.serialize(this);
     }
 }
+// tslint:disable-next-line:member-ordering
+Module.from = (json) => {
+    const ret = new Module();
+    ret.name = json.name;
+    ret.options = json.options;
+    ret.repoName = json.repoName || '';
+    ret.isGithub = json.isGithub !== undefined ? json.isGithub : false;
+    ret.cwd = json.cwd || '';
+    ret.exists = 'exists' in json ? json.exists : false;
+    return ret;
+};
 tslib_1.__decorate([
     class_transformer_1.Exclude()
 ], Module.prototype, "repoName", void 0);

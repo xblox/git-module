@@ -1,7 +1,7 @@
-
 import { IModuleConfig, IModuleOptions } from './types';
 import { serialize, Exclude } from 'class-transformer';
 import * as lodash from 'lodash';
+
 export const defaults = (options: IModuleConfig): IModuleConfig => {
     return {
         clone: options.clone || { post: {} },
@@ -15,21 +15,6 @@ export const defaults = (options: IModuleConfig): IModuleConfig => {
     };
 };
 export class Module implements IModuleConfig {
-    public static from(json: IModuleConfig): Module {
-        const ret = new Module();
-        ret.name = json.name;
-        ret.options = json.options;
-        ret.repoName = json.repoName || '';
-        ret.isGithub = json.isGithub !== undefined ? json.isGithub : false;
-        ret.cwd = json.cwd || '';
-        ret.exists = 'exists' in json ? json.exists : false;
-        return ret;
-    }
-
-    public pack() {
-        const ret = lodash.omitBy(JSON.parse(serialize<Module>(this)), lodash.isNil);
-        return ret as Module;
-    }
 
     @Exclude()
     public repoName: string = '';
@@ -51,7 +36,19 @@ export class Module implements IModuleConfig {
         repository: ''
     };
 
-    public serialize() {
-        return serialize<Module>(this);
+    // tslint:disable-next-line:member-ordering
+    public static from = (json: IModuleConfig): Module => {
+        const ret = new Module();
+        ret.name = json.name;
+        ret.options = json.options;
+        ret.repoName = json.repoName || '';
+        ret.isGithub = json.isGithub !== undefined ? json.isGithub : false;
+        ret.cwd = json.cwd || '';
+        ret.exists = 'exists' in json ? json.exists : false;
+        return ret;
     }
+
+    public pack = () => lodash.omitBy(JSON.parse(serialize<Module>(this)), lodash.isNil) as Module;
+
+    public serialize = () => serialize<Module>(this);
 }
