@@ -44,12 +44,12 @@
     "list": "tsc ; node dist/main.js list --source='../' --target='../out'",
     "last": "tsc ; node dist/main.js last --source='../' --target='../out'",
     "commit": "tsc ; node dist/main.js commit --source='../' --target='../out'",
-    "update-modules": "tsc ; node dist/main.js update --source='../' --target='../out' --verbose=true",
-    "postinstall": "npm link ../../fs"
+    "update-modules": "tsc ; node dist/main.js update --source='../' --target='../out' --verbose=true"
   },
   "dependencies": {
     "@types/globby": "^6.1.0",
     "@types/ora": "^1.3.1",
+    "@xblox/fs": "^0.13.17",
     "class-transformer": "^0.1.8",
     "globby": "^6.1.0",
     "jsome": "^2.3.26",
