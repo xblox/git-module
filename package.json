@@ -34,6 +34,7 @@
     "type": "git",
     "url": "git://github.com/xblox/git-module.git"
   },
+  "main": "dist/main.js",
   "bin": {
     "git-module": "dist/main.js"
   },
