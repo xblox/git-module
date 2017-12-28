@@ -7,6 +7,7 @@ import { get } from '../modules';
 import { IEachOptions } from '../types';
 import { Module } from '../module';
 import * as dir from '@xblox/fs/dir';
+
 const options = (yargs: CLI.Argv) => defaultOptions(yargs.option('command', {
     describe: 'the command to run per module'
 }));
@@ -17,7 +18,7 @@ const description = (): string => {
         chalk.green('\n\t\t\t --command=[command to run]');
 };
 export const register = (cli: CLI.Argv) => {
-    return cli.command('each-module', description(), options, (argv: CLI.Arguments) => {
+    return cli.command('each', description(), options, (argv: CLI.Arguments) => {
         if (argv.help) { return; }
         const args = sanitize(argv) as IEachOptions;
         if (args.target) {
@@ -25,6 +26,5 @@ export const register = (cli: CLI.Argv) => {
         }
         const modules = get(args.source, args.target, args.profile);
         const all = each(modules, args);
-        // all.then((r) => debug.inspect('Modules', r));
     });
 };

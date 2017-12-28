@@ -3,7 +3,7 @@ import * as CLI from 'yargs';
 export interface IModuleOptions {
     repository: string;
     directory: string;
-    profile: string;
+    profile?: string;
 }
 
 export interface IModulePost {
@@ -35,7 +35,7 @@ export type IDefaultCLIArgs = CLI.Arguments & {
     source: string;
     target: string;
     module: string;
-    profile: string;
+    profile?: string;
     filter?: string;
     verbose?: boolean;
 };
@@ -43,4 +43,8 @@ export type IDefaultCLIArgs = CLI.Arguments & {
 export type IEachOptions = IDefaultCLIArgs & {
     delete?: boolean | string;
     command?: string;
+};
+export type IAddOptions = IDefaultCLIArgs & {
+    repository: string;
+    directory: string;
 };

@@ -27,8 +27,12 @@ class Module {
             profile: '',
             repository: ''
         };
-        this.pack = () => lodash.omitBy(JSON.parse(class_transformer_1.serialize(this)), lodash.isNil);
-        this.serialize = () => class_transformer_1.serialize(this);
+    }
+    pack() {
+        return lodash.omitBy(JSON.parse(class_transformer_1.serialize(this)), lodash.isNil);
+    }
+    serialize() {
+        return class_transformer_1.serialize(this);
     }
 }
 // tslint:disable-next-line:member-ordering

@@ -17,18 +17,7 @@
     "typescript": "^2.5.2"
   },
   "modules": [
-    {
-      "name": "Code/client",
-      "options": {
-        "repository": "https://github.com/xblox/xaction.git",
-        "directory": "Code/client"
-      },
-      "clone": {
-        "post": {
-          "command": "npm install"
-        }
-      }
-    }
+    
   ],
   "repository": {
     "type": "git",
@@ -41,9 +30,10 @@
   "scripts": {
     "lint": "tslint --project=./tsconfig.json",
     "status": "tsc ; node dist/main.js each-module --profile='test' --command='status' --source='../' --target='../out'",
-    "clone": "tsc ; node dist/main.js each-module --command='clone' --source='../' --target='../out'",
+    "clone": "tsc ; node dist/main.js each-module --command='clone' --source='./' --target='./out'",
     "list": "tsc ; node dist/main.js list --source='../' --target='../out'",
     "last": "tsc ; node dist/main.js last --source='../' --target='../out'",
+    "add": "tsc ; node dist/main.js add --source='./'",
     "commit": "tsc ; node dist/main.js commit --source='../' --target='../out'",
     "update-modules": "tsc ; node dist/main.js update --source='../' --target='../out' --verbose=true"
   },

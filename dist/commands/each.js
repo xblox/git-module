@@ -14,7 +14,7 @@ const description = () => {
         chalk.green('\n\t\t\t --command=[command to run]');
 };
 exports.register = (cli) => {
-    return cli.command('each-module', description(), options, (argv) => {
+    return cli.command('each', description(), options, (argv) => {
         if (argv.help) {
             return;
         }
@@ -24,7 +24,6 @@ exports.register = (cli) => {
         }
         const modules = modules_1.get(args.source, args.target, args.profile);
         const all = lib_1.each(modules, args);
-        // all.then((r) => debug.inspect('Modules', r));
     });
 };
 //# sourceMappingURL=each.js.map

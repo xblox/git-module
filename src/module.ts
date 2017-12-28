@@ -48,7 +48,11 @@ export class Module implements IModuleConfig {
         return ret;
     }
 
-    public pack = () => lodash.omitBy(JSON.parse(serialize<Module>(this)), lodash.isNil) as Module;
+    public pack() {
+        return lodash.omitBy(JSON.parse(serialize<Module>(this)), lodash.isNil) as Module;
+    }
 
-    public serialize = () => serialize<Module>(this);
+    public serialize() {
+        return serialize<Module>(this);
+    }
 }

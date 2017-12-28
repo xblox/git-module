@@ -6,6 +6,7 @@ const url = require("url");
 const exists_1 = require("@xblox/fs/exists");
 const lib_1 = require("./lib");
 const module_1 = require("./module");
+const lodash = require("lodash");
 exports.complete = (module, root) => {
     const repo = module.options.repository || '';
     const parts = url.parse(repo);
@@ -50,13 +51,23 @@ exports.read = (source, target, profile) => {
         return [];
     }
 };
-exports.get = (source, target, profile) => {
+exports.get = (source, target, profile = '') => {
     let modules = exports.read(source, target, profile);
     if (profile) {
         modules = lib_1.profileFilter(modules, profile);
     }
+    //return modules;
     return modules.map((module) => {
         return module_1.Module.from(module);
     });
+};
+exports.has = (modules, repository, directory) => {
+    const module = lodash.find(modules, {
+        options: {
+            directory,
+            repository
+        }
+    });
+    return module;
 };
 //# sourceMappingURL=modules.js.map
