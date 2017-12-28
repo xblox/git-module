@@ -8,9 +8,8 @@ import { IEachOptions, IGitModuleResult, IModuleConfig, IModules } from './types
 import * as ora from 'ora';
 import * as cli from 'yargs';
 export { get } from './modules';
-export const githubFilter = (module: IModuleConfig): boolean => {
-    return module.isGithub === true;
-};
+
+export const githubFilter = (module: IModuleConfig): boolean => module.isGithub === true;
 // filter to select modules by a profile
 export const profileFilter = (modules: IModules, profile: string): IModules => modules.filter((module) => module.options.profile === profile);
 
@@ -61,30 +60,6 @@ export const each = (modules: Module[], args: IEachOptions, gitArgs?: string[]) 
         return promise;
     });
 };
-/*
-export const post = (mod: IModuleConfig, commandOptions: any, target: string = '') => {
-    mod = defaults(mod);
-    const moduleOptions = mod.options;
-    if (commandOptions && commandOptions.post && commandOptions.post.command) {
-        const moduleCWD = path.join(target, moduleOptions.directory);
-        try {
-            if (fs.statSync(moduleCWD).isDirectory()) {
-                debug.log('run post : ' + commandOptions.post.command + ' in ' + moduleCWD);
-                child_process.exec(commandOptions.post.command, {
-                    cwd: moduleCWD
-                }, (err, stdout, stderr) => {
-                    if (arguments[2] && err) {
-                        debug.error('\t error running post cwd: ' + commandOptions.post.command, err);
-                    }
-                    debug.log('std : \t' + stdout);
-                });
-            }
-        } catch (e) {
-            debug.error('error running post job ' + mod.name);
-        }
-    }
-};
-*/
 export class Helper {
     public static async run(module: IModuleConfig, command: string, gitOptions: any, gitArgs: string[], where: string): Promise<IGitModuleResult> {
         const gitProcess = new Git({
