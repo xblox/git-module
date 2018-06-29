@@ -1,3 +1,4 @@
+# deprecated
 # Package to emulate git sub modules
 
 ### Installation 
